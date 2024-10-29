@@ -1,9 +1,12 @@
-package com.fdmgroup.backend_eventhub.eventsession.controller;
+package com.fdmgroup.backend_eventhub.poll.controller;
 
-import com.fdmgroup.backend_eventhub.eventsession.dto.*;
-import com.fdmgroup.backend_eventhub.eventsession.model.Poll;
-import com.fdmgroup.backend_eventhub.eventsession.model.PollOption;
-import com.fdmgroup.backend_eventhub.eventsession.service.PollService;
+import com.fdmgroup.backend_eventhub.poll.model.Poll;
+import com.fdmgroup.backend_eventhub.poll.model.PollOption;
+import com.fdmgroup.backend_eventhub.poll.service.PollService;
+import com.fdmgroup.backend_eventhub.poll.dto.CreatePollRequest;
+import com.fdmgroup.backend_eventhub.poll.dto.EventPollResponse;
+import com.fdmgroup.backend_eventhub.poll.dto.PollOptionRequest;
+import com.fdmgroup.backend_eventhub.poll.dto.UpdatePollRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

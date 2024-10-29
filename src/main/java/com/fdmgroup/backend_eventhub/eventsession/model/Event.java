@@ -2,6 +2,8 @@ package com.fdmgroup.backend_eventhub.eventsession.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fdmgroup.backend_eventhub.authenticate.model.Account;
+import com.fdmgroup.backend_eventhub.poll.model.Poll;
+import com.fdmgroup.backend_eventhub.poll.model.PollOption;
 import com.fdmgroup.backend_eventhub.videostream.model.Video;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,6 +12,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -47,6 +51,10 @@ public class Event {
     @OneToOne(mappedBy = "event")
     @JsonIgnore
     private Poll poll;
+
+    @OneToMany(mappedBy = "event")
+    @JsonIgnore
+    private List<Content> contents = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {

@@ -1,7 +1,6 @@
-package com.fdmgroup.backend_eventhub.eventsession.model;
+package com.fdmgroup.backend_eventhub.poll.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fdmgroup.backend_eventhub.authenticate.model.Account;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,23 +12,22 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Vote {
+public class PollOption {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "poll_option_id")
-    @JsonIgnore
-    private PollOption pollOption;
+    private String value;
+
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    private String imageUrl;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "poll_id")
     @JsonIgnore
     private Poll poll;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    @JsonIgnore
-    private Account account;
 }

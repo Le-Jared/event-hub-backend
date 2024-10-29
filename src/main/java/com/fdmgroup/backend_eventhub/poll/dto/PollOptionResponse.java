@@ -1,4 +1,4 @@
-package com.fdmgroup.backend_eventhub.eventsession.dto;
+package com.fdmgroup.backend_eventhub.poll.dto;
 
 public class PollOptionResponse {
     private long pollOptionId;

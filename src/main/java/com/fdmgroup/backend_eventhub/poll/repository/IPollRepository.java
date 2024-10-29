@@ -1,6 +1,6 @@
-package com.fdmgroup.backend_eventhub.eventsession.repository;
+package com.fdmgroup.backend_eventhub.poll.repository;
 
-import com.fdmgroup.backend_eventhub.eventsession.model.Poll;
+import com.fdmgroup.backend_eventhub.poll.model.Poll;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

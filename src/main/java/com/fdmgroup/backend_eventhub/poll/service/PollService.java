@@ -1,16 +1,16 @@
-package com.fdmgroup.backend_eventhub.eventsession.service;
+package com.fdmgroup.backend_eventhub.poll.service;
 
 import com.fdmgroup.backend_eventhub.authenticate.model.Account;
 import com.fdmgroup.backend_eventhub.authenticate.repository.AccountRepository;
-import com.fdmgroup.backend_eventhub.eventsession.dto.PollOptionResponse;
-import com.fdmgroup.backend_eventhub.eventsession.dto.EventPollResponse;
-import com.fdmgroup.backend_eventhub.eventsession.model.Poll;
-import com.fdmgroup.backend_eventhub.eventsession.model.PollOption;
-import com.fdmgroup.backend_eventhub.eventsession.model.Vote;
+import com.fdmgroup.backend_eventhub.poll.dto.PollOptionResponse;
+import com.fdmgroup.backend_eventhub.poll.dto.EventPollResponse;
+import com.fdmgroup.backend_eventhub.poll.model.Poll;
+import com.fdmgroup.backend_eventhub.poll.model.PollOption;
+import com.fdmgroup.backend_eventhub.poll.model.Vote;
 import com.fdmgroup.backend_eventhub.eventsession.model.Event;
-import com.fdmgroup.backend_eventhub.eventsession.repository.IPollOptionRepository;
-import com.fdmgroup.backend_eventhub.eventsession.repository.IPollRepository;
-import com.fdmgroup.backend_eventhub.eventsession.repository.IVoteRepository;
+import com.fdmgroup.backend_eventhub.poll.repository.IPollOptionRepository;
+import com.fdmgroup.backend_eventhub.poll.repository.IPollRepository;
+import com.fdmgroup.backend_eventhub.poll.repository.IVoteRepository;
 import com.fdmgroup.backend_eventhub.eventsession.repository.IEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

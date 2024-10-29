@@ -1,4 +1,4 @@
-package com.fdmgroup.backend_eventhub.eventsession.dto;
+package com.fdmgroup.backend_eventhub.poll.dto;
 
 import java.util.List;
 

@@ -1,6 +1,7 @@
-package com.fdmgroup.backend_eventhub.eventsession.model;
+package com.fdmgroup.backend_eventhub.poll.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fdmgroup.backend_eventhub.eventsession.model.Event;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

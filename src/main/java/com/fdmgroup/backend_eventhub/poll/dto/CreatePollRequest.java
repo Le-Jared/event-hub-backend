@@ -1,26 +1,9 @@
-package com.fdmgroup.backend_eventhub.eventsession.dto;
+package com.fdmgroup.backend_eventhub.poll.dto;
 
-public class UpdatePollRequest {
-    private Long accountID;
-    private Long pollID;
+public class CreatePollRequest {
     private String question;
+    private String eventCode;
     private PollOptionRequest[] pollOptionRequests;
-
-    public void setAccountID(Long accountID) {
-        this.accountID = accountID;
-    }
-
-    public Long getPollID() {
-        return pollID;
-    }
-
-    public Long getAccountID() {
-        return accountID;
-    }
-
-    public void setPollID(Long pollID) {
-        this.pollID = pollID;
-    }
 
     public String getQuestion() {
         return question;
@@ -30,6 +13,14 @@ public class UpdatePollRequest {
         this.question = question;
     }
 
+    public String getEventCode() {
+        return eventCode;
+    }
+
+    public void setEventCode(String eventCode) {
+        this.eventCode = eventCode;
+    }
+
     public PollOptionRequest[] getPollOptionRequests() {
         return pollOptionRequests;
     }
@@ -37,5 +28,4 @@ public class UpdatePollRequest {
     public void setPollOptionRequests(PollOptionRequest[] pollOptionRequests) {
         this.pollOptionRequests = pollOptionRequests;
     }
-
 }
