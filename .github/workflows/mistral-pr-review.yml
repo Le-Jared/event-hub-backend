@@ -23,7 +23,7 @@ jobs:
       - name: AI-based PR Reviewer & Summarizer with Mistral 8x7B Chat Capabilities
         uses: Onigam/ai-mistral-pr-reviewer@latest
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.EVENT_HUB_TOKEN }}
           OPENAI_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
         with:
           debug: false
