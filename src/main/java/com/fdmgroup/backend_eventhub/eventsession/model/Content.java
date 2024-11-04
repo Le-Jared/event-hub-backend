@@ -22,7 +22,7 @@ public class Content {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private ContentType type;
-    private String fileName;
+//    private String fileName;
     private long orderNumber;
 
     @ManyToOne(cascade = CascadeType.ALL)
