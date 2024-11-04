@@ -2,7 +2,7 @@ package com.fdmgroup.backend_eventhub.eventsession.service;
 
 import com.fdmgroup.backend_eventhub.authenticate.model.Account;
 import com.fdmgroup.backend_eventhub.authenticate.repository.AccountRepository;
-import com.fdmgroup.backend_eventhub.videostream.service.VideoService;
+import com.fdmgroup.backend_eventhub.modules.service.VideoService;
 import com.fdmgroup.backend_eventhub.eventsession.model.Event;
 import com.fdmgroup.backend_eventhub.eventsession.repository.IEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +33,6 @@ public class EventService {
 
             event.setScheduledDate(scheduledDate);
             event.setScheduledTime(scheduledTime);
-
-            // TODO change to find video by ID based on video selected by the user
-            event.setVideo(videoService.findVideoById(1).get());
-
 
             return eventRepository.save(event);
         } else {

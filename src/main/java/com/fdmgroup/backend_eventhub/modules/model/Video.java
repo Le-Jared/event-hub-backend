@@ -1,6 +1,7 @@
-package com.fdmgroup.backend_eventhub.videostream.model;
+package com.fdmgroup.backend_eventhub.modules.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fdmgroup.backend_eventhub.eventsession.model.Content;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,4 +25,8 @@ public class Video {
     private String thumbnailURL;
     private String videoURL;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "content_id")
+    @JsonIgnore
+    private Content content;
 }

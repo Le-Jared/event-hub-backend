@@ -44,7 +44,6 @@ public class EventController {
     response.setHost(true);
     response.setToken(token);
     response.setCode(event.getCode());
-    response.setVideoSource(VIDEO_BASE_URL + event.getVideo().getVideoURL());
 
     System.out.println(response.toString());
 
@@ -78,7 +77,6 @@ public class EventController {
     JoinEventResponse response = new JoinEventResponse();
     response.setToken(token);
     response.setHost(false);
-    response.setVideoSource(VIDEO_BASE_URL + event.getVideo().getVideoURL());
     response.setRoomId(code);
     System.out.println(response.toString());
 
