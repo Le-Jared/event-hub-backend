@@ -2,7 +2,6 @@ package com.fdmgroup.backend_eventhub.eventsession.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fdmgroup.backend_eventhub.authenticate.model.Account;
-import com.fdmgroup.backend_eventhub.modules.model.Video;
 import com.fdmgroup.backend_eventhub.poll.model.Poll;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

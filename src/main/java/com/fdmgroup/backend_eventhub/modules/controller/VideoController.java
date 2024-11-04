@@ -1,6 +1,6 @@
 package com.fdmgroup.backend_eventhub.modules.controller;
 
-import com.fdmgroup.backend_eventhub.modules.model.Video;
+import com.fdmgroup.backend_eventhub.modules.model.VideoModule;
 import com.fdmgroup.backend_eventhub.modules.service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,22 +22,22 @@ public class VideoController {
     VideoService videoService;
 
     @GetMapping
-    private ResponseEntity<List<Video>> getVideos() {
+    private ResponseEntity<List<VideoModule>> getVideos() {
         // TODO: Implement pagination of videos instead of returning all videos
         // TODO: Decide which properties of the video need to be sent over to the frontend
         return ResponseEntity.ok(videoService.findAllVideos());
     }
 
     @GetMapping("/{id}")
-    private ResponseEntity<Video> getVideoById(@PathVariable("id") long videoId) {
-        Optional<Video> videoOptional = videoService.findVideoById(videoId);
+    private ResponseEntity<VideoModule> getVideoById(@PathVariable("id") long videoId) {
+        Optional<VideoModule> videoOptional = videoService.findVideoById(videoId);
         if ( videoOptional.isEmpty() ) {
             return ResponseEntity.notFound().build();
         } else {
-            Video video = videoOptional.get();
-            video.setVideoURL(VIDEO_BASE_URL + video.getVideoURL());
-            video.setThumbnailURL(THUMBNAIL_BASE_URL + video.getThumbnailURL());
-            return  ResponseEntity.ok(video);
+            VideoModule videoModule = videoOptional.get();
+            videoModule.setVideoURL(VIDEO_BASE_URL + videoModule.getVideoURL());
+            videoModule.setThumbnailURL(THUMBNAIL_BASE_URL + videoModule.getThumbnailURL());
+            return  ResponseEntity.ok(videoModule);
         }
     }
 }

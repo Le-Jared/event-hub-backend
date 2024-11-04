@@ -17,7 +17,7 @@ public class VideoProcessingService implements IVideoProcessingService{
 
         Path masterPlaylist = outputDir.resolve("master.m3u8");
         if (Files.exists(masterPlaylist)) {
-            System.out.println("Video has already been encoded.");
+            System.out.println("VideoModule has already been encoded.");
             return;
         }
 

@@ -2,10 +2,7 @@ package com.fdmgroup.backend_eventhub.eventsession.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fdmgroup.backend_eventhub.eventsession.enums.ContentType;
-import com.fdmgroup.backend_eventhub.modules.model.Image;
 import com.fdmgroup.backend_eventhub.modules.model.Module;
-import com.fdmgroup.backend_eventhub.modules.model.Video;
-import com.fdmgroup.backend_eventhub.poll.model.Poll;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -35,6 +32,6 @@ public class Content {
 
     @OneToOne
     @JoinColumn(name = "module_id", referencedColumnName = "id")
-    private Module module; // This will store the reference to either Image or Video
+    private Module module; // This will store the reference to either ImageModule or VideoModule
 
 }
