@@ -2,9 +2,8 @@ package com.fdmgroup.backend_eventhub.eventsession.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fdmgroup.backend_eventhub.authenticate.model.Account;
+import com.fdmgroup.backend_eventhub.modules.model.Video;
 import com.fdmgroup.backend_eventhub.poll.model.Poll;
-import com.fdmgroup.backend_eventhub.poll.model.PollOption;
-import com.fdmgroup.backend_eventhub.videostream.model.Video;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -39,12 +38,7 @@ public class Event {
     private LocalDate createdDate;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "video_id")
-    @JsonIgnore
-    private Video video;
-
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "account_id")
     @JsonIgnore
     private Account account;
 

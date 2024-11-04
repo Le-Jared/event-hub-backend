@@ -1,7 +1,7 @@
-package com.fdmgroup.backend_eventhub.videostream.service;
+package com.fdmgroup.backend_eventhub.modules.service;
 
-import com.fdmgroup.backend_eventhub.videostream.model.Video;
-import com.fdmgroup.backend_eventhub.videostream.repository.IVideoRepository;
+import com.fdmgroup.backend_eventhub.modules.model.Video;
+import com.fdmgroup.backend_eventhub.modules.repository.IVideoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

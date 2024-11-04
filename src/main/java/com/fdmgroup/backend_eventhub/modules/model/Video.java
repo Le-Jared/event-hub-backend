@@ -1,6 +1,7 @@
-package com.fdmgroup.backend_eventhub.videostream.model;
+package com.fdmgroup.backend_eventhub.modules.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fdmgroup.backend_eventhub.eventsession.model.Content;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,10 +15,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Video {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+public class Video extends Module {
     private String videoTitle;
     private LocalDate uploadedDate;
     private long durationSecond;

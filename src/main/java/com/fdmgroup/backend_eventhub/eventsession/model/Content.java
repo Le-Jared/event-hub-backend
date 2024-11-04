@@ -2,6 +2,9 @@ package com.fdmgroup.backend_eventhub.eventsession.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fdmgroup.backend_eventhub.eventsession.enums.ContentType;
+import com.fdmgroup.backend_eventhub.modules.model.Image;
+import com.fdmgroup.backend_eventhub.modules.model.Module;
+import com.fdmgroup.backend_eventhub.modules.model.Video;
 import com.fdmgroup.backend_eventhub.poll.model.Poll;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,11 +25,16 @@ public class Content {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private ContentType type;
-//    private String fileName;
+
     private long orderNumber;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "event_id")
     @JsonIgnore
     private Event event;
+
+    @OneToOne
+    @JoinColumn(name = "module_id", referencedColumnName = "id")
+    private Module module; // This will store the reference to either Image or Video
+
 }

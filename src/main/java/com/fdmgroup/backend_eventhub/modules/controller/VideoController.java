@@ -1,7 +1,7 @@
-package com.fdmgroup.backend_eventhub.videostream.controller;
+package com.fdmgroup.backend_eventhub.modules.controller;
 
-import com.fdmgroup.backend_eventhub.videostream.model.Video;
-import com.fdmgroup.backend_eventhub.videostream.service.VideoService;
+import com.fdmgroup.backend_eventhub.modules.model.Video;
+import com.fdmgroup.backend_eventhub.modules.service.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

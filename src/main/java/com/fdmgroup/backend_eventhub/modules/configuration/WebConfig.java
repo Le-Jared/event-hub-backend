@@ -1,4 +1,4 @@
-package com.fdmgroup.backend_eventhub.videostream.configuration;
+package com.fdmgroup.backend_eventhub.modules.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
