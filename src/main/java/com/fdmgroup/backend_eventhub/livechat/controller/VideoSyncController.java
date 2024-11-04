@@ -2,6 +2,8 @@ package com.fdmgroup.backend_eventhub.livechat.controller;
 
 import com.fdmgroup.backend_eventhub.livechat.constant.KafkaConstants;
 import com.fdmgroup.backend_eventhub.livechat.models.VideoAction;
+import com.fdmgroup.backend_eventhub.livechat.service.VideoSyncService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -12,13 +14,18 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.concurrent.ExecutionException;
 
 @RestController
+@AllArgsConstructor
 public class VideoSyncController {
+    @Autowired
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @Autowired
-    public VideoSyncController(KafkaTemplate<String, Object> template) {
-        this.kafkaTemplate = template;
-    }
+    private final VideoSyncService videoSyncService;
+
+//    @Autowired
+//    public VideoSyncController(KafkaTemplate<String, Object> template) {
+//        this.kafkaTemplate = template;
+//    }
 
     @MessageMapping("/video")
     public void handleVideoSyncAction(VideoAction action, SimpMessageHeaderAccessor headerAccessor) {
@@ -44,10 +51,12 @@ public class VideoSyncController {
         // the listener will perform the relevant action of distributing the message
         // to all clients who have subscribed to the topic
 
-        try {
-            kafkaTemplate.send(KafkaConstants.KAFKA_VIDEO_TOPIC, action).get();
-        } catch (InterruptedException | ExecutionException e) {
-            System.out.println("Exception occured while sending video sync message to Kafka: " + e);
-        }
+        // uncomment to use Kafka
+//        try {
+//            kafkaTemplate.send(KafkaConstants.KAFKA_VIDEO_TOPIC, action).get();
+//        } catch (InterruptedException | ExecutionException e) {
+//            System.out.println("Exception occured while sending video sync message to Kafka: " + e);
+//        }
+        videoSyncService.sendVideoSyncMessage(action);
     }
 }

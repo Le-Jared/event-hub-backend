@@ -18,7 +18,7 @@ public class VideoSyncService {
             topics = KafkaConstants.KAFKA_VIDEO_TOPIC,
             groupId = "video-sync-service"
     )
-    private void sendVideoSyncMessage(VideoAction action) {
+    public void sendVideoSyncMessage(VideoAction action) {
         System.out.println("Sending video sync message to clients");
         messagingTemplate.convertAndSend("/topic/video/" + action.getSessionId(), action);
         System.out.println("Video Sync Message sent to clients. " +
