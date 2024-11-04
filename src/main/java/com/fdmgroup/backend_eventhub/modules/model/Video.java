@@ -15,18 +15,11 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Getter
 @Setter
-public class Video {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+public class Video extends Module {
     private String videoTitle;
     private LocalDate uploadedDate;
     private long durationSecond;
     private String thumbnailURL;
     private String videoURL;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "content_id")
-    @JsonIgnore
-    private Content content;
 }

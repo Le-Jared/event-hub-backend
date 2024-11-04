@@ -9,14 +9,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class Image extends Module{
-    private String name;
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public class Module {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
 
-    private String filePath;
-
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "content_id")
+    @JsonIgnore
+    private Content content;
 }

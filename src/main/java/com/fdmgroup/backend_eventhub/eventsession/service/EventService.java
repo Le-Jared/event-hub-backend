@@ -36,7 +36,7 @@ public class EventService {
 
             return eventRepository.save(event);
         } else {
-            throw new RuntimeException("Account not found");
+            throw new RuntimeException("Account with ID " + accountID + " not found");
         }
     }
 

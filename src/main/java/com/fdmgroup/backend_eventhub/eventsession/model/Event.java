@@ -38,7 +38,7 @@ public class Event {
     private LocalDate createdDate;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "account_id")
     @JsonIgnore
     private Account account;
 
