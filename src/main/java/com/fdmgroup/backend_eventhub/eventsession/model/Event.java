@@ -1,5 +1,6 @@
 package com.fdmgroup.backend_eventhub.eventsession.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fdmgroup.backend_eventhub.authenticate.model.Account;
 import com.fdmgroup.backend_eventhub.poll.model.Poll;
@@ -32,9 +33,13 @@ public class Event {
     // Add password to authenticate users joining a watchparty
     private String password;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate scheduledDate;
+
+    @JsonFormat(pattern="HH:mm:ss")
     private LocalTime scheduledTime;
 
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate createdDate;
 
     @ManyToOne(cascade = CascadeType.ALL)

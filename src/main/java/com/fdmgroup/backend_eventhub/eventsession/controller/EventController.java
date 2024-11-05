@@ -41,6 +41,7 @@ public class EventController {
           @RequestBody CreateEventRequest createEventRequest) {
 
     Event event = null;
+    System.out.println(createEventRequest.toString());
     try {
       event = eventService.createEvent(
               createEventRequest.getEventName(),

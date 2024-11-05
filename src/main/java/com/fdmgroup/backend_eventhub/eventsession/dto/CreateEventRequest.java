@@ -54,4 +54,15 @@ public class CreateEventRequest {
     public void setScheduledTime(LocalTime scheduledTime) {
         this.scheduledTime = scheduledTime;
     }
+
+    @Override
+    public String toString() {
+        return "CreateEventRequest{" +
+                "eventName='" + eventName + '\'' +
+                ", accountID=" + accountID +
+                ", password='" + password + '\'' +
+                ", scheduledDate=" + scheduledDate +
+                ", scheduledTime=" + scheduledTime +
+                '}';
+    }
 }
