@@ -33,17 +33,17 @@ public class WebSocketHandshakeInterceptor implements HandshakeInterceptor {
         String token = uriComponents.getQueryParams().getFirst("token");
         String partyCode = uriComponents.getQueryParams().getFirst("roomID");
 
-//        if ( token != null ) {
-//            if ( tokenService.isValidToken(token, partyCode) ) {
-//                // System.out.println("Token is valid");
-//                attributes.put("partyCode", partyCode);
-//                System.out.println("Setting user role to: " + tokenService.extractRole(token));
-//                attributes.put("role", tokenService.extractRole(token));
-//                return true;
-//            }
-//        }
-//        return false;
-        return true; // enable auth when ready
+        if ( token != null ) {
+            if ( tokenService.isValidToken(token, partyCode) ) {
+                // System.out.println("Token is valid");
+                attributes.put("partyCode", partyCode);
+                System.out.println("Setting user role to: " + tokenService.extractRole(token));
+                attributes.put("role", tokenService.extractRole(token));
+                return true;
+            }
+        }
+        return false;
+//        return true; // enable auth when ready
     }
 
     @Override

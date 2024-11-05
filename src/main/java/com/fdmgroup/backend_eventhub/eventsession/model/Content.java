@@ -32,6 +32,6 @@ public class Content {
 
     @OneToOne
     @JoinColumn(name = "module_id", referencedColumnName = "id")
-    private Module module; // This will store the reference to either ImageModule or VideoModule
+    private Module module; // This will store the reference to either an ImageModule or a VideoModule
 
 }

@@ -28,22 +28,7 @@ public class SendWatchPartyEmailJob extends QuartzJobBean {
     @Override
     @Transactional
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
-//        LocalDateTime now = LocalDateTime.now();
-//        LocalDateTime tenMinutesLater = now.plusMinutes(10);
-//
-//        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-//
-//        LocalDate currentDate = now.format(dateFormatter);
-//        LocalTime startTime = now.format(timeFormatter);
-//        LocalTime endTime = tenMinutesLater.format(timeFormatter);
-//
-//        List<Event> upcomingEvents = eventRepository.findByScheduledDateAndScheduledTimeBetweenAndReminderEmailSentFalse(
-//                currentDate,
-//                startTime,
-//                endTime
-//        );
-        // after type migration
+
         List<Event> upcomingEvents = eventRepository.findByScheduledDateAndScheduledTimeBetweenAndReminderEmailSentFalse(
                 LocalDate.now(),
                 LocalTime.now(),
