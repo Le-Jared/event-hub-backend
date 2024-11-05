@@ -3,14 +3,17 @@ package com.fdmgroup.backend_eventhub.eventsession.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 @Setter
 @Getter
 public class CreateEventRequest {
     private String eventName;
     private Long accountID;
     private String password;
-    private String scheduledDate;
-    private String scheduledTime;
+    private LocalDate scheduledDate;
+    private LocalTime scheduledTime;
 
     public String getEventName() {
         return eventName;
@@ -36,19 +39,30 @@ public class CreateEventRequest {
         this.password = password;
     }
 
-    public String getScheduledDate() {
+    public LocalDate getScheduledDate() {
         return scheduledDate;
     }
 
-    public void setScheduledDate(String scheduledDate) {
+    public void setScheduledDate(LocalDate scheduledDate) {
         this.scheduledDate = scheduledDate;
     }
 
-    public String getScheduledTime() {
+    public LocalTime getScheduledTime() {
         return scheduledTime;
     }
 
-    public void setScheduledTime(String scheduledTime) {
+    public void setScheduledTime(LocalTime scheduledTime) {
         this.scheduledTime = scheduledTime;
+    }
+
+    @Override
+    public String toString() {
+        return "CreateEventRequest{" +
+                "eventName='" + eventName + '\'' +
+                ", accountID=" + accountID +
+                ", password='" + password + '\'' +
+                ", scheduledDate=" + scheduledDate +
+                ", scheduledTime=" + scheduledTime +
+                '}';
     }
 }

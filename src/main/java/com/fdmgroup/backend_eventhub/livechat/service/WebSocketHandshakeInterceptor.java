@@ -43,6 +43,7 @@ public class WebSocketHandshakeInterceptor implements HandshakeInterceptor {
             }
         }
         return false;
+//        return true; // enable auth when ready
     }
 
     @Override

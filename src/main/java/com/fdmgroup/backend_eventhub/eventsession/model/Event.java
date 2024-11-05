@@ -1,8 +1,8 @@
 package com.fdmgroup.backend_eventhub.eventsession.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fdmgroup.backend_eventhub.authenticate.model.Account;
-import com.fdmgroup.backend_eventhub.modules.model.Video;
 import com.fdmgroup.backend_eventhub.poll.model.Poll;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -32,9 +33,13 @@ public class Event {
     // Add password to authenticate users joining a watchparty
     private String password;
 
-    private String scheduledDate;
-    private String scheduledTime;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    private LocalDate scheduledDate;
 
+    @JsonFormat(pattern="HH:mm:ss")
+    private LocalTime scheduledTime;
+
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate createdDate;
 
     @ManyToOne(cascade = CascadeType.ALL)

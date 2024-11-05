@@ -3,13 +3,16 @@ package com.fdmgroup.backend_eventhub.eventsession.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 @Setter
 @Getter
 public class UpdateEventRequest {
     private String eventName;
     private Long accountId;
-    private String scheduledDate;
-    private String scheduledTime;
+    private LocalDate scheduledDate;
+    private LocalTime scheduledTime;
     private Long eventId;
 
     public String getEventName() {
@@ -28,19 +31,19 @@ public class UpdateEventRequest {
         this.accountId = accountId;
     }
 
-    public String getScheduledTime() {
+    public LocalTime getScheduledTime() {
         return scheduledTime;
     }
 
-    public void setScheduledTime(String scheduledTime) {
+    public void setScheduledTime(LocalTime scheduledTime) {
         this.scheduledTime = scheduledTime;
     }
 
-    public String getScheduledDate() {
+    public LocalDate getScheduledDate() {
         return scheduledDate;
     }
 
-    public void setScheduledDate(String scheduledDate) {
+    public void setScheduledDate(LocalDate scheduledDate) {
         this.scheduledDate = scheduledDate;
     }
 

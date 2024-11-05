@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class VideoSyncService {
-    // this class will receive a message from the Kafka Video Topic
+    // this class will receive a message from the Kafka VideoModule Topic
     // Upon receiving this message, it will send it to all clients connected to the relevant watchparty
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
@@ -18,10 +18,10 @@ public class VideoSyncService {
             topics = KafkaConstants.KAFKA_VIDEO_TOPIC,
             groupId = "video-sync-service"
     )
-    private void sendVideoSyncMessage(VideoAction action) {
+    public void sendVideoSyncMessage(VideoAction action) {
         System.out.println("Sending video sync message to clients");
         messagingTemplate.convertAndSend("/topic/video/" + action.getSessionId(), action);
-        System.out.println("Video Sync Message sent to clients. " +
+        System.out.println("VideoModule Sync Message sent to clients. " +
                 "Session Id: " + action.getSessionId() +
                 " Action: " + action.getActionType());
     }
