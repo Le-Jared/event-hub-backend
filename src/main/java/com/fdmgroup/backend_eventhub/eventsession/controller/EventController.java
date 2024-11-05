@@ -187,4 +187,14 @@ public class EventController {
     return ResponseEntity.status(HttpStatus.CREATED).body(event);
   }
 
+  @DeleteMapping("/delete/{code}")
+  public ResponseEntity<?> deleteEventByCode(@PathVariable String code) {
+    try {
+      eventService.deleteEventByCode(code);
+      return ResponseEntity.status(HttpStatus.OK).body("Event (Code : " + code + ") deleted successfully");
+    } catch ( EventNotFoundException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(EVENT_CODE_NOT_FOUND_MESSAGE);
+    }
+  }
+
 }

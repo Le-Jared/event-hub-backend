@@ -6,6 +6,7 @@ import com.fdmgroup.backend_eventhub.eventsession.exceptions.EventNotFoundExcept
 import com.fdmgroup.backend_eventhub.modules.service.VideoService;
 import com.fdmgroup.backend_eventhub.eventsession.model.Event;
 import com.fdmgroup.backend_eventhub.eventsession.repository.IEventRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -124,6 +125,18 @@ public class EventService {
         } else {
             throw new AccountNotFoundException("Account not found");
         }
+    }
+
+    @Transactional
+    public void deleteEventByCode(String code) throws EventNotFoundException {
+        Optional<Event> eventOptional = findByCode(code);
+        if ( eventOptional.isEmpty() ) {
+            System.out.println("event not found : " + code);
+            throw new EventNotFoundException("Event not found");
+        } else {
+            eventRepository.deleteByCode(code);
+        }
+
     }
 }
 
