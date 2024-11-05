@@ -83,10 +83,20 @@ public class EventController {
     return ResponseEntity.ok(response);
   }
 
-  @GetMapping("/get/{userId}")
+  @GetMapping("/getByUserId/{userId}")
   public ResponseEntity<List<Event>> getEventsByUserId(@PathVariable Long userId) {
     List<Event> events = eventService.getEventsByUserId(userId);
     return ResponseEntity.ok(events);
+  }
+
+  @GetMapping("/get/{code}")
+  public ResponseEntity<Event> getEventByCode(@PathVariable String code) {
+    Optional<Event> eventOptional = eventService.findByCode(code);
+    if (eventOptional.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    } else {
+      return ResponseEntity.ok(eventOptional.get());
+    }
   }
 
   @GetMapping("/get")
