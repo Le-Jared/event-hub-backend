@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.security.auth.login.AccountNotFoundException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,13 +22,18 @@ public class EventService {
     private final AccountRepository accountRepository;
     private final VideoService videoService;
 
+    @Autowired
     public EventService(IEventRepository eventRepository, AccountRepository accountRepository, VideoService videoService) {
         this.eventRepository = eventRepository;
         this.accountRepository = accountRepository;
         this.videoService = videoService;
     }
 
-    public Event createEvent(String eventName, String password, Long accountID, String scheduledDate, String scheduledTime) throws AccountNotFoundException {
+    public Event createEvent(String eventName, String password, Long accountID, LocalDate scheduledDate, LocalTime scheduledTime)
+            throws
+            AccountNotFoundException,
+            IllegalArgumentException
+    {
         if (eventName == null || eventName.isEmpty() || password == null || password.isEmpty() || accountID == null || scheduledDate == null || scheduledTime == null) {
             throw new IllegalArgumentException("Invalid input parameters");
         }
@@ -69,7 +76,12 @@ public class EventService {
         return eventRepository.findEventsWithoutPoll();
     }
 
-    public Event updateEvent(String eventName, Long accountID, String scheduledDate, String scheduledTime, Long eventId) throws AccountNotFoundException, EventNotFoundException {
+    public Event updateEvent(String eventName, Long accountID, LocalDate scheduledDate, LocalTime scheduledTime, Long eventId)
+            throws
+                AccountNotFoundException,
+                EventNotFoundException,
+                IllegalArgumentException
+    {
         if (eventName == null || eventName.isEmpty() || accountID == null || scheduledDate == null || scheduledTime == null || eventId == null) {
             throw new IllegalArgumentException("Invalid input parameters");
         }
@@ -90,7 +102,12 @@ public class EventService {
         }
     }
 
-    public Event updateEventPassword(String password, Long accountID, Long eventId) throws AccountNotFoundException, EventNotFoundException {
+    public Event updateEventPassword(String password, Long accountID, Long eventId)
+            throws
+            AccountNotFoundException,
+            EventNotFoundException,
+            IllegalArgumentException
+    {
         if (password == null || password.isEmpty() || accountID == null || eventId == null) {
             throw new IllegalArgumentException("Invalid input parameters");
         }

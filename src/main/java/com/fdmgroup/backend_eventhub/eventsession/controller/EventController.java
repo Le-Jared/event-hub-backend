@@ -6,6 +6,7 @@ import com.fdmgroup.backend_eventhub.eventsession.exceptions.EventNotFoundExcept
 import com.fdmgroup.backend_eventhub.eventsession.model.Event;
 import com.fdmgroup.backend_eventhub.eventsession.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,6 +34,7 @@ public class EventController {
   private final String ACCOUNT_ID_NOT_FOUND_MESSAGE = "Account ID in request not found";
   private final String EVENT_ID_NOT_FOUND_MESSAGE = "Event ID in request not found";
   private final String EVENT_CODE_NOT_FOUND_MESSAGE = "Event code in request not found";
+  private final String ILLEGAL_PARAMETERS_MESSAGE = "Invalid or missing parameters in request";
 
   @PostMapping("/create")
   public ResponseEntity<?> createEvent(
@@ -49,6 +51,8 @@ public class EventController {
       );
     } catch ( AccountNotFoundException e ) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ACCOUNT_ID_NOT_FOUND_MESSAGE);
+    } catch ( IllegalArgumentException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ILLEGAL_PARAMETERS_MESSAGE);
     }
 
     // generate a token with host privileges to send to the client
@@ -153,6 +157,8 @@ public class EventController {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ACCOUNT_ID_NOT_FOUND_MESSAGE);
     } catch ( EventNotFoundException e ) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(EVENT_ID_NOT_FOUND_MESSAGE);
+    } catch (IllegalArgumentException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ILLEGAL_PARAMETERS_MESSAGE);
     }
 
     return ResponseEntity.status(HttpStatus.CREATED).body(event);
@@ -173,6 +179,8 @@ public class EventController {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ACCOUNT_ID_NOT_FOUND_MESSAGE);
     } catch ( EventNotFoundException e ) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body(EVENT_ID_NOT_FOUND_MESSAGE);
+    } catch ( IllegalArgumentException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ILLEGAL_PARAMETERS_MESSAGE);
     }
 
     return ResponseEntity.status(HttpStatus.CREATED).body(event);

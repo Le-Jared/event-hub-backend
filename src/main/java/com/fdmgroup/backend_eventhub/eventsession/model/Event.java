@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -31,8 +32,8 @@ public class Event {
     // Add password to authenticate users joining a watchparty
     private String password;
 
-    private String scheduledDate;
-    private String scheduledTime;
+    private LocalDate scheduledDate;
+    private LocalTime scheduledTime;
 
     private LocalDate createdDate;
 
