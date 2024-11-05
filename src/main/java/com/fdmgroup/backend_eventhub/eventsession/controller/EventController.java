@@ -17,11 +17,14 @@ import java.util.List;
 @RequestMapping("/api/event")
 public class EventController {
 
-  @Autowired
-  EventService eventService;
+  private final EventService eventService;
+  private final TokenService tokenService;
 
   @Autowired
-  TokenService tokenService;
+  public EventController(EventService eventService, TokenService tokenService) {
+      this.eventService = eventService;
+      this.tokenService = tokenService;
+  }
 
   private final String VIDEO_BASE_URL = "http://localhost:8080/encoded/";
 
