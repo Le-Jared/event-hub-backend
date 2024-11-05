@@ -30,6 +30,7 @@ public class EventService {
         this.videoService = videoService;
     }
 
+    @Transactional
     public Event createEvent(String eventName, String password, Long accountID, LocalDate scheduledDate, LocalTime scheduledTime)
             throws
             AccountNotFoundException,
@@ -38,18 +39,14 @@ public class EventService {
         if (eventName == null || eventName.isEmpty() || password == null || password.isEmpty() || accountID == null || scheduledDate == null || scheduledTime == null) {
             throw new IllegalArgumentException("Invalid input parameters");
         }
-        Optional<Account> account = accountRepository.findById(accountID);
-        if (account.isPresent()) {
-            Event event = new Event();
-            event.setEventName(eventName);
-            event.setAccount(account.get());
-            event.setPassword(password);
-            event.setScheduledDate(scheduledDate);
-            event.setScheduledTime(scheduledTime);
-            return eventRepository.save(event);
-        } else {
-            throw new AccountNotFoundException("Account with ID " + accountID + " not found");
-        }
+        Account account = getAccountOrThrow(accountID);
+        Event event = new Event();
+        event.setEventName(eventName);
+        event.setAccount(account);
+        event.setPassword(password);
+        event.setScheduledDate(scheduledDate);
+        event.setScheduledTime(scheduledTime);
+        return eventRepository.save(event);
     }
 
     public Optional<Event> findByCode(String code) {
@@ -61,12 +58,8 @@ public class EventService {
     }
 
     public List<Event> getEventsByUserId(Long userId) throws AccountNotFoundException {
-        Optional<Account> account = accountRepository.findById(userId);
-        if (account.isPresent()) {
-            return eventRepository.findByAccount(account.get());
-        } else {
-            throw new AccountNotFoundException("Account not found");
-        }
+        Account account = getAccountOrThrow(userId);
+        return eventRepository.findByAccount(account);
     }
 
     public List<Event> getAllEventsWithPoll() {
@@ -77,6 +70,7 @@ public class EventService {
         return eventRepository.findEventsWithoutPoll();
     }
 
+    @Transactional
     public Event updateEvent(String eventName, Long accountID, LocalDate scheduledDate, LocalTime scheduledTime, Long eventId)
             throws
                 AccountNotFoundException,
@@ -86,23 +80,15 @@ public class EventService {
         if (eventName == null || eventName.isEmpty() || accountID == null || scheduledDate == null || scheduledTime == null || eventId == null) {
             throw new IllegalArgumentException("Invalid input parameters");
         }
-        Optional<Account> account = accountRepository.findById(accountID);
-        if (account.isPresent()) {
-            Optional<Event> event = eventRepository.findById(eventId);
-            if (event.isPresent()) {
-                Event updatedevent = event.get();
-                updatedevent.setEventName(eventName);
-                updatedevent.setScheduledDate(scheduledDate);
-                updatedevent.setScheduledTime(scheduledTime);
-                return eventRepository.save(updatedevent);
-            } else {
-                throw new EventNotFoundException("Event not found");
-            }
-        } else {
-            throw new AccountNotFoundException("Account not found");
-        }
+        Account account = getAccountOrThrow(accountID);
+        Event event = getEventOrThrow(eventId);
+        event.setEventName(eventName);
+        event.setScheduledDate(scheduledDate);
+        event.setScheduledTime(scheduledTime);
+        return eventRepository.save(event);
     }
 
+    @Transactional
     public Event updateEventPassword(String password, Long accountID, Long eventId)
             throws
             AccountNotFoundException,
@@ -112,19 +98,10 @@ public class EventService {
         if (password == null || password.isEmpty() || accountID == null || eventId == null) {
             throw new IllegalArgumentException("Invalid input parameters");
         }
-        Optional<Account> account = accountRepository.findById(accountID);
-        if (account.isPresent()) {
-            Optional<Event> event = eventRepository.findById(eventId);
-            if (event.isPresent()) {
-                Event updatedEvent = event.get();
-                updatedEvent.setPassword(password);
-                return eventRepository.save(updatedEvent);
-            } else {
-                throw new EventNotFoundException("Event not found");
-            }
-        } else {
-            throw new AccountNotFoundException("Account not found");
-        }
+        Account account = getAccountOrThrow(accountID);
+        Event event = getEventOrThrow(eventId);
+        event.setPassword(password);
+        return eventRepository.save(event);
     }
 
     @Transactional
@@ -136,7 +113,16 @@ public class EventService {
         } else {
             eventRepository.deleteByCode(code);
         }
+    }
 
+    private Account getAccountOrThrow(Long accountID) throws AccountNotFoundException {
+        return accountRepository.findById(accountID)
+            .orElseThrow(() -> new AccountNotFoundException("Account not found"));
+    }
+
+    private Event getEventOrThrow(Long eventId) throws EventNotFoundException {
+        return eventRepository.findById(eventId)
+            .orElseThrow(() -> new EventNotFoundException("Event not found"));
     }
 }
 
