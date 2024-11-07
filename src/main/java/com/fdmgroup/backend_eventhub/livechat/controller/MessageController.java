@@ -47,12 +47,10 @@ public class MessageController {
     if (message.getSender().equals(null)) {
       message.setSender("anonymous");
     }
-    message.setMessageID(
-        counter++); // set message ID (temp) TODO: change to entity and persist to db
     message.setTimeStamp(LocalDateTime.now()); // assign to current time
     System.out.println("Received message: " + message); // Print the received message content
 
-    messages.add(message); // Save message to list
+    messagePersistenceService.persistMessage(message);
 
     try {
       // Sending the message to kafka topic queue

@@ -1,11 +1,13 @@
 package com.fdmgroup.backend_eventhub.livechat.repository;
 
 import com.fdmgroup.backend_eventhub.livechat.models.Message;
-//import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface IMessageRepository {
+@Repository
+public interface MessageRepository extends JpaRepository<Message, Long> {
     List<Message> findBySessionId(String sessionId);
-    Long deleteMessagesBySessionId(String sessionId);
+
 }

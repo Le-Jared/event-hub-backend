@@ -1,17 +1,24 @@
 package com.fdmgroup.backend_eventhub.livechat.models;
 
 import java.time.LocalDateTime;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.*;
-import org.springframework.data.mongodb.core.mapping.Document;
+//import org.springframework.data.mongodb.core.mapping.Document;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
-@Document("chat-messages")
+@Entity
 public class Message {
 
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private long messageID;
   private MessageType type;
   private String content;

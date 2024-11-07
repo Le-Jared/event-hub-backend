@@ -5,17 +5,20 @@ import com.fdmgroup.backend_eventhub.livechat.models.Message;
 import com.fdmgroup.backend_eventhub.livechat.repository.IMessageRepository;
 import java.util.List;
 import java.util.Optional;
+
+import com.fdmgroup.backend_eventhub.livechat.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 @Service
 public class MessagePersistenceService {
-  @Autowired private IMessageRepository messageRepository;
+//  @Autowired private IMessageRepository messageRepository;
 
+  @Autowired private MessageRepository messageRepository;
   @KafkaListener(topics = KafkaConstants.KAFKA_TOPIC, groupId = "chat-persistence")
   public void persistMessage(Message message) {
-    System.out.println("Persistence Class Received message : " + message);
+//    System.out.println("Persistence Class Received message : " + message);
     // save message to database
     messageRepository.save(message);
   }
@@ -34,6 +37,9 @@ public class MessagePersistenceService {
 
   public long deleteMessagesBySession(String sessionId) {
     // return count of messages deleted
-    return messageRepository.deleteMessagesBySessionId(sessionId);
+//    return messageRepository.deleteMessagesBySessionId(sessionId);
+    List<Message> messages = messageRepository.findBySessionId(sessionId);
+    messages.forEach(messageRepository::delete);
+    return messages.size();
   }
 }
