@@ -18,7 +18,7 @@ import lombok.*;
 public class Message {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private long messageID;
   private MessageType type;
   private String content;
