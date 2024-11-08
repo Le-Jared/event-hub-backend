@@ -2,13 +2,16 @@ package com.fdmgroup.backend_eventhub.eventsession.controller;
 
 import com.fdmgroup.backend_eventhub.authenticate.service.TokenService;
 import com.fdmgroup.backend_eventhub.eventsession.dto.*;
+import com.fdmgroup.backend_eventhub.eventsession.exceptions.EventNotFoundException;
 import com.fdmgroup.backend_eventhub.eventsession.model.Event;
 import com.fdmgroup.backend_eventhub.eventsession.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.autoconfigure.observation.ObservationProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.security.auth.login.AccountNotFoundException;
 import java.util.Optional;
 import java.util.List;
 
@@ -17,25 +20,41 @@ import java.util.List;
 @RequestMapping("/api/event")
 public class EventController {
 
-  @Autowired
-  EventService eventService;
+  private final EventService eventService;
+  private final TokenService tokenService;
 
   @Autowired
-  TokenService tokenService;
+  public EventController(EventService eventService, TokenService tokenService) {
+      this.eventService = eventService;
+      this.tokenService = tokenService;
+  }
 
   private final String VIDEO_BASE_URL = "http://localhost:8080/encoded/";
 
+  private final String ACCOUNT_ID_NOT_FOUND_MESSAGE = "Account ID in request not found";
+  private final String EVENT_ID_NOT_FOUND_MESSAGE = "Event ID in request not found";
+  private final String EVENT_CODE_NOT_FOUND_MESSAGE = "Event code in request not found";
+  private final String ILLEGAL_PARAMETERS_MESSAGE = "Invalid or missing parameters in request";
+
   @PostMapping("/create")
-  public ResponseEntity<CreateEventResponse> createEvent(
+  public ResponseEntity<?> createEvent(
           @RequestBody CreateEventRequest createEventRequest) {
 
-    Event event = eventService.createEvent(
-            createEventRequest.getEventName(),
-            createEventRequest.getPassword(),
-            createEventRequest.getAccountID(),
-            createEventRequest.getScheduledDate(),
-            createEventRequest.getScheduledTime()
-    );
+    Event event = null;
+    System.out.println(createEventRequest.toString());
+    try {
+      event = eventService.createEvent(
+              createEventRequest.getEventName(),
+              createEventRequest.getPassword(),
+              createEventRequest.getAccountID(),
+              createEventRequest.getScheduledDate(),
+              createEventRequest.getScheduledTime()
+      );
+    } catch ( AccountNotFoundException e ) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ACCOUNT_ID_NOT_FOUND_MESSAGE);
+    } catch ( IllegalArgumentException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ILLEGAL_PARAMETERS_MESSAGE);
+    }
 
     // generate a token with host privileges to send to the client
     String token = tokenService.generateToken(event.getCode(), "host");
@@ -60,7 +79,7 @@ public class EventController {
     Optional<Event> eventOptional = eventService.findByCode(code);
 
     if ( eventOptional.isEmpty() ) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid party code");
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(EVENT_CODE_NOT_FOUND_MESSAGE);
     }
 
     Event event = eventOptional.get();
@@ -83,10 +102,25 @@ public class EventController {
     return ResponseEntity.ok(response);
   }
 
-  @GetMapping("/get/{userId}")
-  public ResponseEntity<List<Event>> getEventsByUserId(@PathVariable Long userId) {
-    List<Event> events = eventService.getEventsByUserId(userId);
-    return ResponseEntity.ok(events);
+  @GetMapping("/getByUserId/{userId}")
+  public ResponseEntity<?> getEventsByUserId(@PathVariable Long userId) {
+      List<Event> events = null;
+      try {
+          events = eventService.getEventsByUserId(userId);
+      } catch ( AccountNotFoundException e ) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ACCOUNT_ID_NOT_FOUND_MESSAGE);
+      }
+      return ResponseEntity.ok(events);
+  }
+
+  @GetMapping("/get/{code}")
+  public ResponseEntity<?> getEventByCode(@PathVariable String code) {
+    Optional<Event> eventOptional = eventService.findByCode(code);
+    if (eventOptional.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(EVENT_CODE_NOT_FOUND_MESSAGE);
+    } else {
+      return ResponseEntity.ok(eventOptional.get());
+    }
   }
 
   @GetMapping("/get")
@@ -108,31 +142,59 @@ public class EventController {
   }
 
   @PostMapping("/update")
-  public ResponseEntity<Event> updateWatchParty(
+  public ResponseEntity<?> updateWatchParty(
           @RequestBody UpdateEventRequest updateEventRequest) {
 
-    Event event = eventService.updateEvent(
-            updateEventRequest.getEventName(),
-            updateEventRequest.getAccountId(),
-            updateEventRequest.getScheduledDate(),
-            updateEventRequest.getScheduledTime(),
-            updateEventRequest.getEventId()
-    );
+    Event event = null;
+    try {
+      event = eventService.updateEvent(
+              updateEventRequest.getEventName(),
+              updateEventRequest.getAccountId(),
+              updateEventRequest.getScheduledDate(),
+              updateEventRequest.getScheduledTime(),
+              updateEventRequest.getEventId()
+      );
+    } catch ( AccountNotFoundException e ) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ACCOUNT_ID_NOT_FOUND_MESSAGE);
+    } catch ( EventNotFoundException e ) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(EVENT_ID_NOT_FOUND_MESSAGE);
+    } catch (IllegalArgumentException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ILLEGAL_PARAMETERS_MESSAGE);
+    }
 
     return ResponseEntity.status(HttpStatus.CREATED).body(event);
   }
 
   @PostMapping("/update-password")
-  public ResponseEntity<Event> updateEventPassword(
+  public ResponseEntity<?> updateEventPassword(
           @RequestBody UpdateEventPasswordRequest updateEventPasswordRequest) {
 
-    Event event = eventService.updateEventPassword(
-            updateEventPasswordRequest.getPassword(),
-            updateEventPasswordRequest.getAccountId(),
-            updateEventPasswordRequest.getEventId()
-    );
+    Event event;
+    try {
+      event = eventService.updateEventPassword(
+              updateEventPasswordRequest.getPassword(),
+              updateEventPasswordRequest.getAccountId(),
+              updateEventPasswordRequest.getEventId()
+      );
+    } catch ( AccountNotFoundException e ) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ACCOUNT_ID_NOT_FOUND_MESSAGE);
+    } catch ( EventNotFoundException e ) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(EVENT_ID_NOT_FOUND_MESSAGE);
+    } catch ( IllegalArgumentException e) {
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ILLEGAL_PARAMETERS_MESSAGE);
+    }
 
     return ResponseEntity.status(HttpStatus.CREATED).body(event);
+  }
+
+  @DeleteMapping("/delete/{code}")
+  public ResponseEntity<?> deleteEventByCode(@PathVariable String code) {
+    try {
+      eventService.deleteEventByCode(code);
+      return ResponseEntity.status(HttpStatus.OK).body("Event (Code : " + code + ") deleted successfully");
+    } catch ( EventNotFoundException e) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body(EVENT_CODE_NOT_FOUND_MESSAGE);
+    }
   }
 
 }

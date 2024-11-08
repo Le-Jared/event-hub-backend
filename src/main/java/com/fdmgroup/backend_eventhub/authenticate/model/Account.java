@@ -79,6 +79,13 @@ public class Account implements UserDetails {
         return List.of();
     }
 
+
+
+    @Override
+    public String getUsername() {
+        return this.username;
+    }
+
     //FYI the methods below return true.
     @Override
     public boolean isAccountNonExpired() {

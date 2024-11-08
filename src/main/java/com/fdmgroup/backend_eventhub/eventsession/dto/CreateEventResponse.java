@@ -52,4 +52,14 @@ public class CreateEventResponse {
     public void setHost(boolean host) {
         isHost = host;
     }
+
+    @Override
+    public String toString() {
+        return "CreateEventResponse{" +
+                "token='" + token + '\'' +
+                ", videoSource='" + videoSource + '\'' +
+                ", code='" + code + '\'' +
+                ", isHost=" + isHost +
+                '}';
+    }
 }

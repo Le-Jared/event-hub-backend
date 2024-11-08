@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
+
+import com.fdmgroup.backend_eventhub.livechat.service.MessageSenderService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -18,16 +21,22 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class MessageController {
 
+  @Autowired
   private final KafkaTemplate<String, Object> kafkaTemplate;
 
   private final List<Message> messages = new ArrayList<>();
   private long counter = 0;
 
-  @Autowired private MessagePersistenceService messagePersistenceService;
+  @Autowired
+  private final MessagePersistenceService messagePersistenceService;
 
   @Autowired
-  public MessageController(KafkaTemplate<String, Object> kafkaTemplate) {
+  private final MessageSenderService messageSenderService;
+
+  public MessageController(KafkaTemplate<String, Object> kafkaTemplate, MessagePersistenceService messagePersistenceService, MessageSenderService messageSenderService) {
     this.kafkaTemplate = kafkaTemplate;
+    this.messagePersistenceService = messagePersistenceService;
+    this.messageSenderService = messageSenderService;
   }
 
   @MessageMapping("/chat")
@@ -49,16 +58,22 @@ public class MessageController {
     }
     message.setTimeStamp(LocalDateTime.now()); // assign to current time
     System.out.println("Received message: " + message); // Print the received message content
+    messages.add(message);
+
+// Uncomment to use Kafka
+//    try {
+//      // Sending the message to kafka topic queue
+//      kafkaTemplate.send(KafkaConstants.KAFKA_TOPIC, message).get();
+//      System.out.println("Message sent to kafka");
+//    } catch (InterruptedException | ExecutionException e) {
+//      System.out.println("Error sending message to kafka");
+//    }
+
+    messageSenderService.sendMessage(message);
 
     messagePersistenceService.persistMessage(message);
 
-    try {
-      // Sending the message to kafka topic queue
-      kafkaTemplate.send(KafkaConstants.KAFKA_TOPIC, message).get();
-      System.out.println("Message sent to kafka");
-    } catch (InterruptedException | ExecutionException e) {
-      System.out.println("Error sending message to kafka");
-    }
+
   }
 
   /*
@@ -86,16 +101,20 @@ public class MessageController {
   @GetMapping("/api/messages/{sessionID}")
   public ResponseEntity<List<Message>> getMessagesBySessionID(
       @PathVariable("sessionID") String sessionID) {
-    Optional<List<Message>> chatMessagesFromSession =
-        messagePersistenceService.findMessagesBySession(sessionID);
-    if (chatMessagesFromSession.isEmpty()) {
-      return ResponseEntity.internalServerError().build();
-    } else {
-      return ResponseEntity.ok(chatMessagesFromSession.get());
-    }
+//    Optional<List<Message>> chatMessagesFromSession =
+//        messagePersistenceService.findMessagesBySession(sessionID);
+//    if (chatMessagesFromSession.isEmpty()) {
+//      return ResponseEntity.internalServerError().build();
+//    } else {
+//      return ResponseEntity.ok(chatMessagesFromSession.get());
+//    }
+
+
+
 
     //    return ResponseEntity.ok(chatMessagesFromSession);
-    // messages.stream().filter(message -> message.getSessionId().equals(sessionID)).toList();
+
+    return ResponseEntity.ok(messages.stream().filter(message -> message.getSessionId().equals(sessionID)).toList());
   }
 
   @GetMapping("/api/clearMessages")

@@ -10,7 +10,9 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -26,20 +28,11 @@ public class SendWatchPartyEmailJob extends QuartzJobBean {
     @Override
     @Transactional
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime tenMinutesLater = now.plusMinutes(10);
-
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
-
-        String currentDate = now.format(dateFormatter);
-        String startTime = now.format(timeFormatter);
-        String endTime = tenMinutesLater.format(timeFormatter);
 
         List<Event> upcomingEvents = eventRepository.findByScheduledDateAndScheduledTimeBetweenAndReminderEmailSentFalse(
-                currentDate,
-                startTime,
-                endTime
+                LocalDate.now(),
+                LocalTime.now(),
+                LocalTime.now().plusMinutes(10)
         );
 
         for (Event event : upcomingEvents) {
