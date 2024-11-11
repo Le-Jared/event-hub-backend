@@ -19,8 +19,10 @@ public class VideoChatbotService {
     private String googleApiKey;
 
     private final String GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
-    private final String PRE_PROMPT = "You are an AI assistant that analyzes Steamboat Willie. Make it short and concise " +
-            "Respond to the user's input, but make sure your response is always about Steamboat Willie. " ;
+//    private final String PRE_PROMPT = "You are an AI assistant that analyzes Steamboat Willie. Make it short and concise " +
+//            "Respond to the user's input, but make sure your response is always about Steamboat Willie. " ;
+
+    private final String PRE_PROMPT = " ";
 
     public String generateResponse(String userInput) {
         RestTemplate restTemplate = new RestTemplate();
@@ -35,7 +37,7 @@ public class VideoChatbotService {
         prePromptContent.put("role", "model");
         Map<String, String> prePromptPart = new HashMap<>();
         prePromptPart.put("text", PRE_PROMPT);
-        prePromptContent.put("parts", new Object[]{prePromptPart});
+        prePromptContent.put("parts", new Object[]{ prePromptPart });
         contents.add(prePromptContent);
 
         // Add user input with role "user"
@@ -43,7 +45,7 @@ public class VideoChatbotService {
         userContent.put("role", "user");
         Map<String, String> userPart = new HashMap<>();
         userPart.put("text", userInput);
-        userContent.put("parts", new Object[]{userPart});
+        userContent.put("parts", new Object[]{ userPart });
         contents.add(userContent);
 
         requestBody.put("contents", contents);
@@ -55,7 +57,7 @@ public class VideoChatbotService {
         try {
             Map<String, Object> response = restTemplate.postForObject(url, request, Map.class);
             return extractGeneratedText(response);
-        } catch (Exception e) {
+        } catch ( Exception e ) {
             e.printStackTrace();
             return "Error: " + e.getMessage();
         }
@@ -63,23 +65,23 @@ public class VideoChatbotService {
 
 
     private String extractGeneratedText(Map<String, Object> response) {
-        if (response == null || !response.containsKey("candidates")) {
+        if ( response == null || !response.containsKey("candidates") ) {
             return "Error: Unexpected response format";
         }
 
         List<Map<String, Object>> candidates = (List<Map<String, Object>>) response.get("candidates");
-        if (candidates.isEmpty()) {
+        if ( candidates.isEmpty() ) {
             return "Error: No response generated";
         }
 
         Map<String, Object> firstCandidate = candidates.get(0);
-        if (!firstCandidate.containsKey("content")) {
+        if ( !firstCandidate.containsKey("content") ) {
             return "Error: Response content not found";
         }
 
         Map<String, Object> content = (Map<String, Object>) firstCandidate.get("content");
         List<Map<String, Object>> parts = (List<Map<String, Object>>) content.get("parts");
-        if (parts.isEmpty()) {
+        if ( parts.isEmpty() ) {
             return "Error: Response parts not found";
         }
 
