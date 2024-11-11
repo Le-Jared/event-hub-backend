@@ -12,28 +12,30 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-  @Autowired
-  WebSocketHandshakeInterceptor handshakeInterceptor;
+    @Autowired
+    WebSocketHandshakeInterceptor handshakeInterceptor;
 
-  @Override
-  public void registerStompEndpoints(StompEndpointRegistry registry) {
-    registry
-        .addEndpoint(
-                "/chat",
-                "/video-sync",
-                "/emoji")
-        .addInterceptors(handshakeInterceptor) // interceptor authenticates websocket connection
-        .setAllowedOrigins("http://localhost:5173") // allow requests from React app
-        .withSockJS(); // client should connect with SockJS
-    // withSockJs will allow the websockets to work even if the browser does not support
-    // web sockets
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry
+                .addEndpoint(
+                        "/chat",
+                        "/video-sync",
+                        "/emoji",
+                        "/moduleAction")
 
-  }
+//                .addInterceptors(handshakeInterceptor) // interceptor authenticates websocket connection
+                .setAllowedOrigins("http://localhost:5173") // allow requests from React app
+                .withSockJS(); // client should connect with SockJS
+        // withSockJs will allow the websockets to work even if the browser does not support
+        // web sockets
 
-  @Override
-  public void configureMessageBroker(MessageBrokerRegistry registry) {
-    registry.enableSimpleBroker("/topic"); // topic prefix (e.g. "/topic/hello")
-    registry.setApplicationDestinationPrefixes(
-        "/app"); // application prefix - where to send messages to
-  }
+    }
+
+    @Override
+    public void configureMessageBroker(MessageBrokerRegistry registry) {
+        registry.enableSimpleBroker("/topic"); // topic prefix (e.g. "/topic/hello")
+        registry.setApplicationDestinationPrefixes(
+                "/app"); // application prefix - where to send messages to
+    }
 }
