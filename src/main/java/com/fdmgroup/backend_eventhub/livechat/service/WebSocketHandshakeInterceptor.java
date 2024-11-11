@@ -28,22 +28,22 @@ public class WebSocketHandshakeInterceptor implements HandshakeInterceptor {
 
         // can't use the above because the headers are not passed as part of the handshake
         // therefore send the token as a parameter in the URI to connect to the websocket
-        UriComponents uriComponents = UriComponentsBuilder.fromUri(request.getURI()).build();
-
-        String token = uriComponents.getQueryParams().getFirst("token");
-        String partyCode = uriComponents.getQueryParams().getFirst("roomID");
-
-        if ( token != null ) {
-            if ( tokenService.isValidToken(token, partyCode) ) {
-                // System.out.println("Token is valid");
-                attributes.put("partyCode", partyCode);
-                System.out.println("Setting user role to: " + tokenService.extractRole(token));
-                attributes.put("role", tokenService.extractRole(token));
-                return true;
-            }
-        }
-        return false;
-//        return true; // enable auth when ready
+//        UriComponents uriComponents = UriComponentsBuilder.fromUri(request.getURI()).build();
+//
+//        String token = uriComponents.getQueryParams().getFirst("token");
+//        String partyCode = uriComponents.getQueryParams().getFirst("roomID");
+//
+//        if ( token != null ) {
+//            if ( tokenService.isValidToken(token, partyCode) ) {
+//                // System.out.println("Token is valid");
+//                attributes.put("partyCode", partyCode);
+//                System.out.println("Setting user role to: " + tokenService.extractRole(token));
+//                attributes.put("role", tokenService.extractRole(token));
+//                return true;
+//            }
+//        }
+//        return false;
+        return true; // enable auth when ready
     }
 
     @Override
