@@ -28,16 +28,16 @@ public class VideoSyncController {
 //    }
 
     @MessageMapping("/video")
-    public void handleVideoSyncAction(VideoAction action, SimpMessageHeaderAccessor headerAccessor) {
+    public void handleVideoSyncAction(VideoAction action) {
         // verify that the message received is from an authorised source
-        String partyCode = (String) headerAccessor.getSessionAttributes().get("partyCode");
-        String role = (String) headerAccessor.getSessionAttributes().get("role");
-        if ( !action.getSessionId().equals(partyCode) ) {
-            throw new AccessDeniedException("Unauthorised to send messages in this chat room");
-        } else {
-            System.out.println("Session ID matches");
-            System.out.println(partyCode);
-        }
+//        String partyCode = (String) headerAccessor.getSessionAttributes().get("partyCode");
+//        String role = (String) headerAccessor.getSessionAttributes().get("role");
+//        if ( !action.getSessionId().equals(partyCode) ) {
+//            throw new AccessDeniedException("Unauthorised to send messages in this chat room");
+//        } else {
+//            System.out.println("Session ID matches");
+//            System.out.println(partyCode);
+//        }
 
         // TODO Uncomment this when host control needs to be reactivated
 //        if ( !role.equals("host") ) {
