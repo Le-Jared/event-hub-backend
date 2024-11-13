@@ -3,8 +3,11 @@ package com.fdmgroup.backend_eventhub.livechat.controller;
 import com.fdmgroup.backend_eventhub.livechat.models.StreamStatus;
 import com.fdmgroup.backend_eventhub.livechat.models.StreamStatusNotification;
 import com.fdmgroup.backend_eventhub.livechat.models.StreamStatusRecord;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
@@ -57,19 +60,28 @@ public class StreamStatusController {
                         new StreamStatusRecord("VIEWER_JOIN", UUID.randomUUID().toString(), sessionID,
                                 stream.getViewerCount(), stream.isLive())
                 );
+                break;
             }
             case "VIEWER_LEAVE": {
-                stream.setViewerCount(stream.getViewerCount() - 1);
+                int count = Math.max(stream.getViewerCount() - 1, 0);
+                stream.setViewerCount(count);
                 template.convertAndSend("/topic/streamStatus/" + sessionID,
                         new StreamStatusRecord("VIEWER_LEAVE", UUID.randomUUID().toString(), sessionID,
                                 stream.getViewerCount(), stream.isLive())
                 );
+                break;
             }
             default:
                 System.out.println("command not found: " + type);
                 break;
         }
         streamMap.put(sessionID, stream);
+    }
+
+    @GetMapping("/api/streamStatus/{sessionID}")
+    public ResponseEntity<StreamStatus> getStreamStatus(@PathVariable String sessionID) {
+        return ResponseEntity.ok(streamMap.get(sessionID));
+
     }
 
 
