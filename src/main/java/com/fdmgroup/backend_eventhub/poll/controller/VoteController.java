@@ -23,10 +23,10 @@ public class VoteController {
     public ResponseEntity<Vote> createVote(
             @RequestParam("pollId") long pollId,
             @RequestParam("pollOptionId") long pollOptionId,
-            @RequestParam("accountId") long accountId) {
+            @RequestParam("userDisplayName") String userDisplayName) {
 
         // create vote
-        Vote vote = voteService.createVote(pollId, pollOptionId, accountId);
+        Vote vote = voteService.createVote(pollId, pollOptionId, userDisplayName);
         return ResponseEntity.status(HttpStatus.CREATED).body(vote);
 
     }
@@ -35,9 +35,9 @@ public class VoteController {
     public ResponseEntity<Vote> changeVote(
             @RequestParam("pollId") long pollId,
             @RequestParam("newPollOptionId") long newPollOptionId,
-            @RequestParam("accountId") long accountId) {
+            @RequestParam("userDisplayName") String userDisplayName) {
         // change vote
-        Vote vote = voteService.changeVote(pollId, newPollOptionId, accountId);
+        Vote vote = voteService.changeVote(pollId, newPollOptionId, userDisplayName);
         return ResponseEntity.status(HttpStatus.CREATED).body(vote);
     }
 }

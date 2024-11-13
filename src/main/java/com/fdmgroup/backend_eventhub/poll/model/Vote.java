@@ -28,8 +28,5 @@ public class Vote {
     @JsonIgnore
     private Poll poll;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    @JsonIgnore
-    private Account account;
+    private String userDisplayName;
 }

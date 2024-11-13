@@ -24,22 +24,19 @@ public class VoteService {
     @Autowired
     IVoteRepository voteRepository;
 
-    public Vote createVote(Long pollId, Long pollOptionId, Long accountId) {
+    public Vote createVote(Long pollId, Long pollOptionId, String userDisplayName) {
         Optional<Poll> poll = pollRepository.findById(pollId);
         Optional<PollOption> pollOption = pollOptionRepository.findById(pollOptionId);
-        Optional<Account> account = accountRepository.findById(accountId);
 
         // check if the poll, poll option and account is available
         if (poll.isEmpty()) {
             throw new RuntimeException("Poll not found");
         } if (pollOption.isEmpty()) {
             throw new RuntimeException("Poll Option not found");
-        } if (account.isEmpty()) {
-            throw new RuntimeException("Account not found");
         }
 
         //check if user has casted vote on this poll previously
-        Optional<Vote> prevVote = voteRepository.findByPollAndAccount(poll.get(), account.get());
+        Optional<Vote> prevVote = voteRepository.findByPollAndUserDisplayName(poll.get(), userDisplayName);
 
         if (prevVote.isPresent()) {
             throw new RuntimeException("User already voted on this poll");
@@ -48,21 +45,18 @@ public class VoteService {
         Vote vote = new Vote();
         vote.setPoll(poll.get());
         vote.setPollOption(pollOption.get());
-        vote.setAccount(account.get());
+        vote.setUserDisplayName(userDisplayName);
 
         return voteRepository.save(vote);
     }
 
-    public Vote changeVote(long pollId, long newPollOptionId, long accountId) {
+    public Vote changeVote(long pollId, long newPollOptionId, String userDisplayName) {
         // find present vote of the user on the specific poll
         Optional<Poll> poll = pollRepository.findById(pollId);
-        Optional<Account> account = accountRepository.findById(accountId);
         if (poll.isEmpty()) {
             throw new RuntimeException("Poll not found");
-        } if (account.isEmpty()) {
-            throw new RuntimeException("Account not found");
         }
-        Optional<Vote> prevVote = voteRepository.findByPollAndAccount(poll.get(), account.get());
+        Optional<Vote> prevVote = voteRepository.findByPollAndUserDisplayName(poll.get(), userDisplayName);
         if (prevVote.isPresent()) {
             Vote newVote = prevVote.get();
             Optional<PollOption> pollOption = pollOptionRepository.findByIdAndPollId(newPollOptionId, pollId);
