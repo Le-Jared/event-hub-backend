@@ -13,7 +13,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Autowired
-    WebSocketHandshakeInterceptor handshakeInterceptor;
+//    WebSocketHandshakeInterceptor handshakeInterceptor;
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
@@ -22,13 +22,16 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                         "/chat",
                         "/video-sync",
                         "/emoji",
-                        "/moduleAction")
-
+                        "/moduleAction",
+                        "/streamStatus")
 //                .addInterceptors(handshakeInterceptor) // interceptor authenticates websocket connection
                 .setAllowedOrigins("http://localhost:5173") // allow requests from React app
                 .withSockJS(); // client should connect with SockJS
         // withSockJs will allow the websockets to work even if the browser does not support
         // web sockets
+
+//        registry.addEndpoint("/streamStatus")
+//                .setAllowedOrigins("http://localhost:5173");
 
     }
 
