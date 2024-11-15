@@ -1,6 +1,5 @@
 package com.fdmgroup.backend_eventhub.livechat.controller;
 
-import com.fdmgroup.backend_eventhub.livechat.models.EmojiReaction;
 import com.fdmgroup.backend_eventhub.livechat.models.ModuleAction;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -16,7 +15,7 @@ public class ModuleActionController {
     }
 
     @MessageMapping("/moduleAction")
-    public void handleEmojiReactions(ModuleAction action) {
+    public void triggerModuleAction(ModuleAction action) {
         System.out.println(action);
         template.convertAndSend("/topic/moduleAction/" + action.SESSION_ID(), action);
 

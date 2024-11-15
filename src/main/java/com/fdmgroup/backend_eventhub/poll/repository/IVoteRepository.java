@@ -1,6 +1,5 @@
 package com.fdmgroup.backend_eventhub.poll.repository;
 
-import com.fdmgroup.backend_eventhub.authenticate.model.Account;
 import com.fdmgroup.backend_eventhub.poll.model.Poll;
 import com.fdmgroup.backend_eventhub.poll.model.Vote;
 import org.springframework.data.jpa.repository.JpaRepository;
