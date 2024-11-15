@@ -114,20 +114,22 @@ public class StreamStatusController {
             String roomId = entry.getKey();
             Set<String> sessions = entry.getValue();
 
-            if ( sessions.remove(wsSessionId) ) {
-                StreamStatus stream = streamMap.get(roomId);
-                if ( stream != null ) {
-                    stream.setViewerCount(sessions.size());
-                    streamMap.put(roomId, stream);
+            synchronized ( sessions ) {
+                if ( sessions.remove(wsSessionId) ) {
+                    StreamStatus stream = streamMap.get(roomId);
+                    if ( stream != null ) {
+                        stream.setViewerCount(sessions.size());
+                        streamMap.put(roomId, stream);
 
-                    // Notify remaining clients about the viewer count update
-                    template.convertAndSend("/topic/streamStatus/" + roomId,
-                            new StreamStatusRecord("VIEWER_LEAVE",
-                                    UUID.randomUUID().toString(),
-                                    roomId,
-                                    stream.getViewerCount(),
-                                    stream.isLive())
-                    );
+                        // Notify remaining clients about the viewer count update
+                        template.convertAndSend("/topic/streamStatus/" + roomId,
+                                new StreamStatusRecord("VIEWER_LEAVE",
+                                        UUID.randomUUID().toString(),
+                                        roomId,
+                                        stream.getViewerCount(),
+                                        stream.isLive())
+                        );
+                    }
                 }
             }
         }
