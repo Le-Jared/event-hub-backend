@@ -54,7 +54,7 @@ public class StreamStatusController {
                         sessionID, stream.getViewerCount(), stream.isLive())
         );
 
-        streamMap.put(sessionID, stream);
+
     }
 
     private void handleMessage(String type, Set<String> activeSessions, String wsSessionId, StreamStatus stream, String sessionID) {
@@ -96,6 +96,7 @@ public class StreamStatusController {
                 break;
 
         }
+        streamMap.put(sessionID, stream);
     }
 
     @GetMapping("/api/streamStatus/{sessionID}")
