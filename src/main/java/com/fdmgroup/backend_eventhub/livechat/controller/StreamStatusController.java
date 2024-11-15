@@ -46,6 +46,18 @@ public class StreamStatusController {
         StreamStatus stream = streamMap.get(sessionID);
         Set<String> activeSessions = sessionTracker.get(sessionID);
 
+        handleMessage(type, activeSessions, wsSessionId, stream, sessionID);
+
+        // Send update to all clients
+        template.convertAndSend("/topic/streamStatus/" + sessionID,
+                new StreamStatusRecord(type, UUID.randomUUID().toString(),
+                        sessionID, stream.getViewerCount(), stream.isLive())
+        );
+
+        streamMap.put(sessionID, stream);
+    }
+
+    private void handleMessage(String type, Set<String> activeSessions, String wsSessionId, StreamStatus stream, String sessionID) {
         switch ( type ) {
             case "VIEWER_JOIN": {
                 if ( !activeSessions.contains(wsSessionId) ) {
@@ -84,14 +96,6 @@ public class StreamStatusController {
                 break;
 
         }
-
-        // Send update to all clients
-        template.convertAndSend("/topic/streamStatus/" + sessionID,
-                new StreamStatusRecord(type, UUID.randomUUID().toString(),
-                        sessionID, stream.getViewerCount(), stream.isLive())
-        );
-
-        streamMap.put(sessionID, stream);
     }
 
     @GetMapping("/api/streamStatus/{sessionID}")
