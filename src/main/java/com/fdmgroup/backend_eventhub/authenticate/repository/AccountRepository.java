@@ -18,6 +18,7 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
      * Finds an Account entity by username.
      *
      * @param username The username of the Account entity.
+     *
      * @return an {@link Optional} containing the User entity if found, empty otherwise.
      */
     Optional<Account> findByUsername(String username);
@@ -26,16 +27,10 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
      * Finds an Account entity by email address.
      *
      * @param email The email address of the Account entity.
+     *
      * @return an {@link Optional} containing the Account entity if found, empty otherwise.
      */
     Optional<Account> findByEmail(String email);
 
-    /**
-     * Finds an Account entity by password.
-     *
-     * @param password The password of the Account entity.
-     * @return an {@link Optional} containing the Account entity if found, empty otherwise.
-     */
-    Optional<Account> findByPassword(String password);
 
 }
