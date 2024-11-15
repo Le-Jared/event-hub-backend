@@ -24,7 +24,7 @@ public class Poll {
 
     private String question;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "event_id")
     @JsonIgnore
     private Event event;
@@ -36,9 +36,4 @@ public class Poll {
     public long getId() {
         return id;
     }
-
-    public void addPollOptions(PollOption pollOption) {
-        pollOptions.add(pollOption);
-    }
-
 }

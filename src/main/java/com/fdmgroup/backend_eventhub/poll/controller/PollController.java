@@ -42,7 +42,6 @@ public class PollController {
                             request.getDescription(),
                             request.getFileName()
                     );
-                    poll.addPollOptions(pollOption);
                 }
             }
         }
@@ -55,9 +54,9 @@ public class PollController {
        return ResponseEntity.status(HttpStatus.CREATED).body(pollOptionsList);
     }
 
-    @PostMapping("/get-watchparty-poll-by-code")
-    public ResponseEntity<EventPollResponse> getWatchPartyPollByCode(@RequestParam("code") String code, @RequestParam("userId") long userId)  {
-        EventPollResponse response = pollService.getEventPollResponse(code, userId);
+    @PostMapping("/get-event-poll-by-code")
+    public ResponseEntity<EventPollResponse> getWatchPartyPollByCode(@RequestParam("code") String code, @RequestParam("userDisplayName") String userDisplayName)  {
+        EventPollResponse response = pollService.getEventPollResponse(code, userDisplayName);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

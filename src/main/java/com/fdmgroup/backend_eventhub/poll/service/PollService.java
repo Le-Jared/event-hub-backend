@@ -76,16 +76,15 @@ public class PollService {
         return pollOptionRepository.findByPollId(pollId);
     }
 
-    public EventPollResponse getEventPollResponse(String code, long userId) {
-        Optional<Account> account = accountRepository.findById(userId);
+    public EventPollResponse getEventPollResponse(String code, String userDisplayName) {
         EventPollResponse response = new EventPollResponse();
         Vote prevVote = new Vote();
 
         //query 1: return poll id of the watch party based on code?
         Optional<Poll> eventPoll = pollRepository.getPollIdByEventCode(code);
-        if(eventPoll.isPresent() && account.isPresent()) {
+        if(eventPoll.isPresent()) {
             //check if user has casted vote on this poll previously
-            Optional<Vote> prevVoteOptional = voteRepository.findByPollAndAccount(eventPoll.get(), account.get());
+            Optional<Vote> prevVoteOptional = voteRepository.findByPollAndUserDisplayName(eventPoll.get(), userDisplayName);
             if (prevVoteOptional.isPresent()){
                 prevVote = prevVoteOptional.get();
                 response.setVoted(true);
@@ -97,11 +96,6 @@ public class PollService {
 
         } else {
             prevVote = null;
-            if(account.isEmpty()) {
-                throw new RuntimeException("User not logged in!");
-            } else {
-                throw new RuntimeException("No poll created for this watch party");
-            }
         }
 
         //query 2: return list of poll options based on poll id
